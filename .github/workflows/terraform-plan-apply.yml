@@ -1,0 +1,89 @@
+name: Terraform Plan-Apply
+#on: 
+  #push: #quando ele vai rodar
+    #branches:
+      #- main #branch que ele vai rodar
+  #workflow_dispatch: #permite executar manualmente
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform_plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v3
+
+    # Instalar Terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false 
+
+    # Configurar credenciais AWS
+    - name: Configurar AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    # Inicializar Terraform
+    - name: Terraform Init
+      run: terraform init
+
+    # Validar código Terraform
+    - name: Terraform Validate
+      run: terraform validate
+
+    # Gerar plano de execução
+    - name: Terraform Plan
+      env:
+        AWS_KEY_PUB: ${{ secrets.AWS_KEY_PUB }}
+      run: |
+        terraform plan -var "aws_key_pub=${{ secrets.AWS_KEY_PUB }}"
+
+  terraform_apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    needs: terraform_plan
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v3
+
+    # Instalar Terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false 
+
+    # Configurar credenciais AWS
+    - name: Configurar AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    # Inicializar Terraform (se usar backend remoto)
+    - name: Terraform Init (Remote Backend)
+      run: terraform init
+
+    # Aplicar mudanças
+    - name: Terraform Apply
+      env:
+        AWS_KEY_PUB: ${{ secrets.AWS_KEY_PUB }}
+      run: |
+        terraform apply -auto-approve -var "aws_key_pub=${{ secrets.AWS_KEY_PUB }}"
