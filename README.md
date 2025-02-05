@@ -4,7 +4,7 @@ Este repositório contém uma pipeline configurada no GitHub Actions para realiz
 
 #Arquitetura do projeto
 
-![image](https://github.com/user-attachments/assets/8256cab5-1e1b-444a-b4b1-f2fac87c3e40)
+![image](https://github.com/user-attachments/assets/aae64d15-f715-40f3-8687-9511adb0f5e5)
 
 ## Funcionalidades
 
