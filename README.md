@@ -126,3 +126,10 @@ Este repositório contém uma pipeline configurada no GitHub Actions para realiz
 ### Após cada deploy, as replicas/tarefas serão atualizadas e substituidas por novas, conforme a nova imagem da aplicação hospedada no ECR
 
 ![image](https://github.com/user-attachments/assets/e731d76e-b55b-4af5-9657-040ffd2bdcf3)
+
+### Protinho, sua aplicação já deve estar disponível no IP público da replica/tarefa na porta 5000 e conectada ao banco de dados RDS
+
+![image](https://github.com/user-attachments/assets/9105a2d1-c686-4a08-8d82-c2ea21adac1b)
+![image](https://github.com/user-attachments/assets/79896d77-ce91-4590-b5b3-db488c92d0d9)
+![image](https://github.com/user-attachments/assets/885533ec-1147-44d4-8d92-7f5fa8342030)
+
